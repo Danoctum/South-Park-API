@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\EpisodeController;
+use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Storage;
 
 /*
@@ -32,3 +33,7 @@ Route::get('/characters/{id}', [CharacterController::class, 'show'])->name('char
 
 Route::get('/episodes', [EpisodeController::class, 'index'])->name('episodeIndex');
 Route::get('/episodes/{id}', [EpisodeController::class, 'show'])->name('episodeShow');
+
+
+Route::get('/locations', [LocationController::class, 'index'])->name('locationIndex');
+Route::get('/locations/{id}', [LocationController::class, 'show'])->name('locationShow');

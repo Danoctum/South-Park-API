@@ -15,7 +15,7 @@ class CharacterController extends Controller
      */
     public function index()
     {
-        $characters = Character::with(['relatives', 'episodes'])->paginate();
+        $characters = Character::with(['relatives', 'episodes'])->paginate(10);
         return CharacterShowResource::collection($characters);
     }
 

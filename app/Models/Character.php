@@ -19,16 +19,6 @@ class Character extends Model
         return $this->belongsToMany('App\Models\Character', 'character_relative', 'relative_id', 'character_id')->withPivot('relation');
     }
     
-    /**
-     * First episode is defined as a relation because it can be optionally retrieved now.
-     * As a 'virtual field' it would always be retrieved, which is not what we want.
-     * 
-     * Currently not even used...
-     */
-    // public function firstEpisode() {
-    //     return $this->belongsTo('App\Models\Episode', 'first_appearance_episode_id');
-    // }
-
     public function getUrlAttribute() {
         return route('characterShow', ['id' => $this->id]);
     }

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Episode;
+use App\Models\Location;
 use Illuminate\Http\Request;
-use App\Http\Resources\EpisodeResource;
+use App\Http\Resources\LocationResource;
 
-class EpisodeController extends Controller
+class LocationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class EpisodeController extends Controller
      */
     public function index()
     {
-        $episodes = Episode::with(['characters', 'locations'])->paginate(10);
-        return EpisodeResource::collection($episodes);
+        $locations = Location::with('episodes')->paginate(10);
+        return LocationResource::collection($locations);
     }
 
     /**
@@ -43,22 +43,22 @@ class EpisodeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Episode  $episode
+     * @param  \App\Models\Location  $location
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $episode = Episode::with(['characters', 'locations'])->findOrFail($id);
-        return new EpisodeResource($episode);
+        $location = Location::with('episodes')->findOrFail($id);
+        return new LocationResource($location);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Episode  $episode
+     * @param  \App\Models\Location  $location
      * @return \Illuminate\Http\Response
      */
-    public function edit(Episode $episode)
+    public function edit(Location $location)
     {
         //
     }
@@ -67,10 +67,10 @@ class EpisodeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Episode  $episode
+     * @param  \App\Models\Location  $location
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Episode $episode)
+    public function update(Request $request, Location $location)
     {
         //
     }
@@ -78,10 +78,10 @@ class EpisodeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Episode  $episode
+     * @param  \App\Models\Location  $location
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Episode $episode)
+    public function destroy(Location $location)
     {
         //
     }
