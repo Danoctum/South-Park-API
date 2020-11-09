@@ -30,4 +30,12 @@ class Character extends Model
     public function createCharacterShowUrlFromId($id) {
         return env('API_URL') . $this->baseEndpoint . $id;
     }
+
+    public function scopeSearch($query, $keyword)
+    {
+        return $query->where([
+            ['name', 'LIKE', '%'.$keyword.'%'],
+            ['full_name', 'LIKE', '%'.$keyword.'%']
+        ]);
+    }
 }

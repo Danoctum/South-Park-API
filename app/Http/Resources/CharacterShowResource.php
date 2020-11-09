@@ -17,8 +17,11 @@ class CharacterShowResource extends JsonResource
     {
         $relatives = [];
         foreach($this->relatives as $relative) {
-            //  TODO: add relation of the pivot table!
-            array_push($relatives, $this->createCharacterShowUrlFromId($relative->id));
+            array_push($relatives, [
+                'url' => $this->createCharacterShowUrlFromId($relative->id),
+                'relation' => $relative->pivot->relation
+                //  Relation data is added separately, since a 'father' can have multiple inverses, i.e. 'son' or 'daughter'
+            ]);
         }
 
         $episodes = [];

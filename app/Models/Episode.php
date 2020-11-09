@@ -21,4 +21,11 @@ class Episode extends Model
     public function createEpisodeShowUrlFromId($id) {
         return env('API_URL') . $this->baseEndpoint . $id;
     }
+
+    public function scopeSearch($query, $keyword)
+    {
+        return $query->where([
+            ['name', 'LIKE', '%'.$keyword.'%']
+        ]);
+    }
 }

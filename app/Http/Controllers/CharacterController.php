@@ -13,9 +13,14 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $characters = Character::with(['relatives', 'episodes'])->paginate(10);
+        $charactersQuery = Character::with(['relatives', 'episodes']);
+        if($request->query('search')) {
+            $charactersQuery->search($request->query('search'));
+        }
+        
+        $characters = $charactersQuery->paginate(10);
         return CharacterShowResource::collection($characters);
     }
 
@@ -47,7 +52,7 @@ class CharacterController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
+    {   
         $character = \App\Models\Character::with(['relatives', 'episodes'])->findOrFail($id);
         return new CharacterShowResource($character);
     }

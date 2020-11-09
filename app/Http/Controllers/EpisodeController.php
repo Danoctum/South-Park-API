@@ -13,9 +13,14 @@ class EpisodeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $episodes = Episode::with(['characters', 'locations'])->paginate(10);
+        $episodesQuery = Episode::with(['characters', 'locations']);
+        if($request->query('search')) {
+            $episodesQuery->search($request->query('search'));
+        }
+
+        $episodes = $episodesQuery->paginate(10);
         return EpisodeResource::collection($episodes);
     }
 

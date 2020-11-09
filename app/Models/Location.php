@@ -22,4 +22,11 @@ class Location extends Model
     public function getFirstAppearanceEpisodeUrlAttribute() {
         return route('episodeShow', ['id' => $this->first_appearance_episode_id]);
     }
+
+    public function scopeSearch($query, $keyword)
+    {
+        return $query->where([
+            ['name', 'LIKE', '%'.$keyword.'%']
+        ]);
+    }
 }
