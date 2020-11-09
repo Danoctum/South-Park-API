@@ -22,11 +22,12 @@ class CharacterShowResource extends JsonResource
 
         $episodes = [];
         //  Q: Is it better to use a static function without class initializiation, or non-static functions with class initialization?
-        //  i.e. $episodeModel = new Episode(); $episodeModel->createEpisodeShowUrlFromId($episode->id);
-        //  And then have the createEpisodeShowUrlFromId non-statically.
+        //  i.e. Episode::createEpisodeShowUrlFromId($episode->id);
+        //  And then have the createEpisodeShowUrlFromId static.
         //  Can't be done exactly the same as with the relatives since that class is injected into $this.
+        $episodeClass = new Episode();
         foreach($this->episodes as $episode) {
-            array_push($episodes, Episode::createEpisodeShowUrlFromId($episode->id));
+            array_push($episodes, $episodeClass->createEpisodeShowUrlFromId($episode->id));
         }
 
         return array_merge(

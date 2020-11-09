@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Episode extends Model
 {
     use HasFactory;
-    static public $baseEndpoint = 'episode/';
+    public $baseEndpoint = 'episode/';
 
     public function locations() {
         return $this->belongsToMany('App\Models\Location');
@@ -18,7 +18,7 @@ class Episode extends Model
         return $this->belongsToMany('App\Models\Character');
     }
 
-    static public function createEpisodeShowUrlFromId($id) {
-        return env('API_URL') . self::$baseEndpoint . $id;
+    public function createEpisodeShowUrlFromId($id) {
+        return env('API_URL') . $this->baseEndpoint . $id;
     }
 }
