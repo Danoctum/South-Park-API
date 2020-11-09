@@ -15,7 +15,7 @@ class CharacterController extends Controller
      */
     public function index()
     {
-        $characters = \App\Models\Character::with(['relatives'])->paginate();
+        $characters = \App\Models\Character::with(['relatives', 'episodes'])->paginate();
         return CharacterShowResource::collection($characters);
     }
 
@@ -48,7 +48,7 @@ class CharacterController extends Controller
      */
     public function show($id)
     {
-        $character = \App\Models\Character::with(['relatives'])->findOrFail($id);
+        $character = \App\Models\Character::with(['relatives', 'episodes'])->findOrFail($id);
         return new CharacterShowResource($character);
     }
 

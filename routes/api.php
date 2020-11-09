@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\EpisodeController;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/characters', [CharacterController::class, 'index'])->name('characterIndex');
+
+Route::get('/characters/schema', function() {
+    return Storage::get('character.json');
+})->name('characterSchema');
+
 Route::get('/characters/{id}', [CharacterController::class, 'show'])->name('characterShow');
 
 
