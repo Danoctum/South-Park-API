@@ -30,4 +30,5 @@ Route::get('/characters/schema', function() {
 Route::get('/characters/{id}', [CharacterController::class, 'show'])->name('characterShow');
 
 
-Route::get('/episodes/{episode}', [EpisodeController::class, 'show'])->name('showEpisode');
+Route::get('/episodes', [EpisodeController::class, 'index'])->name('episodeIndex');
+Route::get('/episodes/{id}', [EpisodeController::class, 'show'])->name('episodeShow');

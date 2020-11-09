@@ -34,7 +34,7 @@ class Character extends Model
     }
 
     public function getFirstAppearanceEpisodeUrlAttribute() {
-        return route('showEpisode', ['episode' => $this->first_appearance_episode_id]);
+        return route('episodeShow', ['id' => $this->first_appearance_episode_id]);
     }
 
     public function createCharacterShowUrlFromId($id) {

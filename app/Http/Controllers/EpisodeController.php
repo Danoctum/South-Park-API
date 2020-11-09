@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Episode;
 use Illuminate\Http\Request;
+use App\Http\Resources\EpisodeResource;
 
 class EpisodeController extends Controller
 {
@@ -14,7 +15,8 @@ class EpisodeController extends Controller
      */
     public function index()
     {
-        //
+        $episodes = Episode::with(['characters', 'locations'])->paginate();
+        return EpisodeResource::collection($episodes);
     }
 
     /**
@@ -44,9 +46,10 @@ class EpisodeController extends Controller
      * @param  \App\Models\Episode  $episode
      * @return \Illuminate\Http\Response
      */
-    public function show(Episode $episode)
+    public function show($id)
     {
-        //
+        $episode = Episode::with(['characters', 'locations'])->findOrFail($id);
+        return new EpisodeResource($episode);
     }
 
     /**

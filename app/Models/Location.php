@@ -8,8 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Location extends Model
 {
     use HasFactory;
+    public $baseEndpoint = 'locations/';
 
     public function episodes() {
         return $this->belongsToMany('App\Models\Episode');
+    }
+
+    public function createLocationShowUrlFromId($id) {
+        return env('API_URL') . $this->baseEndpoint . $id;
     }
 }

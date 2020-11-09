@@ -17,6 +17,7 @@ class CharacterShowResource extends JsonResource
     {
         $relatives = [];
         foreach($this->relatives as $relative) {
+            //  TODO: add relation of the pivot table!
             array_push($relatives, $this->createCharacterShowUrlFromId($relative->id));
         }
 
@@ -37,6 +38,5 @@ class CharacterShowResource extends JsonResource
                 'episodes' => $episodes,
             ]
         );
-        return parent::toArray($request);
     }
 }
