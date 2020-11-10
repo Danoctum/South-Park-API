@@ -32,6 +32,11 @@ Route::get('/characters/{id}', [CharacterController::class, 'show'])->name('char
 
 
 Route::get('/episodes', [EpisodeController::class, 'index'])->name('episodeIndex');
+
+Route::get('/episodes/schema', function() {
+    return Storage::get('episode.json');
+})->name('episodeSchema');
+
 Route::get('/episodes/{id}', [EpisodeController::class, 'show'])->name('episodeShow');
 
 

@@ -1,0 +1,60 @@
+{
+    "description": "An episode of the South Park series",
+    "title": "Episodes",
+    "type": "object",
+    "required": [
+        "id",
+        "name",
+        "season",
+        "episode",
+        "written_by",
+        "air_date",
+        "created_at",
+        "updated_at"
+    ],
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "The id of this episode"
+        },
+        "name": {
+            "type": "string",
+            "description": "The title of this episode"
+        },
+        "season": {
+            "type": "integer",
+            "description": "The season this episode is a part of"
+        },
+        "episode": {
+            "type": "integer",
+            "description": "The episode number in the season"
+        },
+        "written_by": {
+            "type": "string",
+            "description": "Comma seperated string of the writers of this episode"
+        },
+        "air_date": {
+            "type": "string",
+            "description": "ISO 8601 format of the date this episode aired",
+            "format": "date"
+        },
+        "created_at": {
+            "type": "string",
+            "description": "The ISO 8601 date format of the time that this resource was created",
+            "format": "date-time"
+        },
+        "updated_at": {
+            "type": "string",
+            "description": "The ISO 8601 date format of the time that this resource was updated",
+            "format": "date-time"
+        },
+        "characters":  {
+            "type": "array",
+            "description": "An array of characters that made an appearance this episode"
+        },
+        "locations": {
+            "type": "array",
+            "description": "An array of locations that made an appearance this episode"
+        }
+    }
+}
