@@ -41,4 +41,9 @@ Route::get('/episodes/{id}', [EpisodeController::class, 'show'])->name('episodeS
 
 
 Route::get('/locations', [LocationController::class, 'index'])->name('locationIndex');
+
+Route::get('/locations/schema', function() {
+    return Storage::get('location.json');
+})->name('locationSchema');
+
 Route::get('/locations/{id}', [LocationController::class, 'show'])->name('locationShow');
