@@ -1,0 +1,94 @@
+{
+    "description": "A character within the South Park universe",
+    "title": "Characters",
+    "type": "object",
+    "required": [
+        "id",
+        "name",
+        "full_name",
+        "age",
+        "sex",
+        "hair_color",
+        "occcupation",
+        "grade",
+        "religion",
+        "voiced_by",
+        "first_appearance_episode_id",
+        "created_at",
+        "updated_at"
+    ],
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "The id of this character"
+        },
+        "name": {
+            "type": "string",
+            "description": "The name this character is known as"
+        },
+        "full_name": {
+            "type": "string",
+            "description": "The full name of this character"
+        },
+        "age": {
+            "type": "integer",
+            "description": "The age of this character"
+        },
+        "sex": {
+            "type": "string",
+            "description": "The sex of this character (if known)"
+        },
+        "hair_color": {
+            "type": "string",
+            "description": "The hair color of this character"
+        },
+        "occupation": {
+            "type": "string",
+            "description": "The occupation of this character"
+        },
+        "grade": {
+            "type": "string",
+            "description": "The grade this character is in (if in school)"
+        },
+        "religion": {
+            "type": "string",
+            "description": "The main religion of this character (temporary changes of religion not tracked)"
+        },
+        "voiced_by": {
+            "type": "string",
+            "description": "The voice actor name of this character"
+        },
+        "first_appearance_episode_id": {
+            "type": "string",
+            "description": "The id of the episode this character first appeared in"
+        },
+        "created_at": {
+            "type": "string",
+            "description": "The ISO 8601 date format of the time that this resource was created",
+            "format": "date-time"
+        },
+        "updated_at": {
+            "type": "string",
+            "description": "The ISO 8601 date format of the time that this resource was updated",
+            "format": "date-time"
+        },
+        "url": {
+            "type": "string",
+            "description": "The url of this resource",
+            "format": "uri"
+        },
+        "first_appearance_episode_url":  {
+            "type": "string",
+            "description": "The url of the episode this character first appeared in",
+            "format": "uri"
+        },
+        "relatives":  {
+            "type": "array",
+            "description": "An array of relatives with the relative url and relation for this character"
+        },
+        "episodes": {
+            "type": "array",
+            "description": "An array of urls of episodes this character has appeared in"
+        }
+    }
+}

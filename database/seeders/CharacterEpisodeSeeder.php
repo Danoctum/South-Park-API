@@ -3,7 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Episode;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class CharacterEpisodeSeeder extends Seeder
 {
@@ -14,32 +15,16 @@ class CharacterEpisodeSeeder extends Seeder
      */
     public function run()
     {
-        $charactersPerEpisode = (object) [
-            1 => [
-                1,
-                2,
-                3,
-                4,
-            ],
-            2 => [
-                1,
-                2,
-                3,
-                4,
-            ],
-            3 => [
-                1,
-                2,
-                3,
-                4,
-                5,
-            ],
-        ];
+        $json = Storage::get('episodes.json');
+        $episodesArray = json_decode($json, true);
 
-
-        foreach($charactersPerEpisode as $episodeId=>$characterIds) {
-            $episode = Episode::find($episodeId);
-            $episode->characters()->attach($characterIds);
+        foreach($episodesArray['episodes'] as $episode) {
+            foreach($episode['characters'] as $characterId) {
+                DB::table('character_episode')->insert([
+                    'character_id' => $characterId,
+                    'episode_id' => $episode['id'],
+                ]);
+            }
         }
     }
 }

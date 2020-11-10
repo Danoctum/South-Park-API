@@ -10,6 +10,7 @@ class Character extends Model
     use HasFactory;
     public $baseEndpoint = 'characters/';
     protected $appends = ['url', 'first_appearance_episode_url'];   //  This in combination with getUrlAttribute() becomes a 'virtual field'
+    protected $guarded = [];
 
     public function episodes() {
         return $this->belongsToMany('App\Models\Episode');

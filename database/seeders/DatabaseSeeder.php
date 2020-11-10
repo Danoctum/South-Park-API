@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
             LocationSeeder::class,
             EpisodeLocationSeeder::class,
             CharacterEpisodeSeeder::class,
-            CharacterRelativeSeeder::class,
         ]);
     }
 }

@@ -10,6 +10,7 @@ class Location extends Model
     use HasFactory;
     public $baseEndpoint = 'locations/';
     protected $appends =['first_appearance_episode_url'];
+    protected $guarded = [];
 
     public function episodes() {
         return $this->belongsToMany('App\Models\Episode');

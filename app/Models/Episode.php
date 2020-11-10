@@ -9,6 +9,7 @@ class Episode extends Model
 {
     use HasFactory;
     public $baseEndpoint = 'episode/';
+    protected $guarded = [];
 
     public function locations() {
         return $this->belongsToMany('App\Models\Location');

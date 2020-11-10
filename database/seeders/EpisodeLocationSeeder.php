@@ -3,7 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Episode;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class EpisodeLocationSeeder extends Seeder
 {
@@ -14,36 +15,16 @@ class EpisodeLocationSeeder extends Seeder
      */
     public function run()
     {
-        $locationsPerEpisode = (object) [
-            1 => [
-                1,
-                2,
-                3,
-                4,
-            ],
-            2 => [
-                1,
-                2,
-                3,
-                5,
-                6,
-                7,
-                8,
-                9,
-            ],
-            3 => [
-                3,
-                6,
-                10,
-                11,
-                12
-            ],
-        ];
+        $json = Storage::get('episodes.json');
+        $episodesArray = json_decode($json, true);
 
-
-        foreach($locationsPerEpisode as $episodeId=>$locationIds) {
-            $episode = Episode::find($episodeId);
-            $episode->locations()->attach($locationIds);
+        foreach($episodesArray['episodes'] as $episode) {
+            foreach($episode['locations'] as $locationId) {
+                DB::table('episode_location')->insert([
+                    'location_id' => $locationId,
+                    'episode_id' => $episode['id'],
+                ]);
+            }
         }
     }
 }

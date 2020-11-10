@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class EpisodeSeeder extends Seeder
 {
@@ -14,32 +15,13 @@ class EpisodeSeeder extends Seeder
      */
     public function run()
     {
-        $episodes = [
-            [
-                'name' => 'Cartman Gets an Anal Probe',
-                'season' => 1,
-                'episode' => 1,
-                'written_by' => 'Trey Parker',
-                'air_date' => '1997-08-13',
-            ],
-            [
-                'name' => 'Weight Gain 4000',
-                'season' => 1,
-                'episode' => 2,
-                'written_by' => 'Trey Parker',
-                'air_date' => '1997-08-20',
-            ],
-            [
-                'name' => 'Volcano',
-                'season' => 1,
-                'episode' => 3,
-                'written_by' => 'Trey Parker',
-                'air_date' => '1997-08-27',
-            ],
-        ];
+        $json = Storage::get('episodes.json');
+        $episodesArray = json_decode($json, true);
 
 
-        foreach($episodes as $episode) {
+        foreach($episodesArray['episodes'] as $episode) {
+            unset($episode['characters']);
+            unset($episode['locations']);
             DB::table('episodes')->insert($episode);
         }
     }
