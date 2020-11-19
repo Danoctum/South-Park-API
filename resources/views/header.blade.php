@@ -20,6 +20,6 @@
                 </ul>
             </div>
         </nav>
-        <img src="{{ asset('header_image.png')}}">
+        <img src="{{ asset('/storage/header_image.png')}}">
     </header>
 @show
