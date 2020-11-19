@@ -1,0 +1,25 @@
+@import "~bootstrap/scss/bootstrap";
+
+.test {
+    width: 100px;
+}
+
+body {
+    background-color: $dark;
+    color: #fff;
+
+    .code-block {
+        background-color: #eee;
+        color: #000;
+    }
+
+    a, a:hover {
+        color: #bbb;
+    }
+}
+
+header {
+    img {
+        width: 100%;
+    }
+}
