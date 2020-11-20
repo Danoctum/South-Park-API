@@ -17,7 +17,7 @@ class Location extends Model
     }
 
     public function createLocationShowUrlFromId($id) {
-        return env('API_URL') . $this->baseEndpoint . $id;
+        return route('locationShow', ['id' => $id]);
     }
 
     public function getFirstAppearanceEpisodeUrlAttribute() {

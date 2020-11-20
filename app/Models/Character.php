@@ -29,7 +29,7 @@ class Character extends Model
     }
 
     public function createCharacterShowUrlFromId($id) {
-        return env('API_URL') . $this->baseEndpoint . $id;
+        return route('characterShow', ['id' => $id]);
     }
 
     public function scopeSearch($query, $keyword)

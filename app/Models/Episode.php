@@ -20,7 +20,7 @@ class Episode extends Model
     }
 
     public function createEpisodeShowUrlFromId($id) {
-        return env('API_URL') . $this->baseEndpoint . $id;
+        return route('episodeShow', ['id' => $id]);
     }
 
     public function scopeSearch($query, $keyword)
