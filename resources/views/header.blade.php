@@ -8,13 +8,13 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
+                    <li class="nav-item {{ Request::is('*/')  ? "active" : "" }}">
                         <a class="nav-link" href="{{route('home')}}">Home</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {{ Request::is('*docs')  ? "active" : "" }}">
                         <a class="nav-link" href="{{route('docs')}}">Documentation</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {{ Request::is('*about')  ? "active" : "" }}">
                         <a class="nav-link" href="{{route('about')}}">About</a>
                     </li>
                 </ul>

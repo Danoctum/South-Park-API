@@ -64,7 +64,7 @@
             </div> 
             <div class="col-sm-12 col-md-4 col-lg-4">
                 <h4>How to use this?</h4>
-                <p>All the data is accessible trough the API with the HTTP protocol. We've made <a href="/docs">documentation</a> to clarify how the API can be used. Go there to get started!</p>
+                <p>All the data is accessible trough the API with the HTTP protocol. We've made <a href="{{route('docs')}}">documentation</a> to clarify how the API can be used. Go there to get started!</p>
             </div> 
             <div class="col-sm-12 col-md-4 col-lg-4">
                 <h4>How to contribute?</h4>

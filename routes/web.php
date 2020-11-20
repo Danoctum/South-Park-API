@@ -18,7 +18,13 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/about', function() {
-    // return view('')
+    return view('about', [
+        'characterCount' => App\Models\Character::count(),
+        'episodeCount' => App\Models\Episode::count(),
+        'locationCount' => App\Models\Location::count(),
+    ]);
 })->name('about');
 
-Route::get('/docs')->name('docs');
+Route::get('/docs', function() {
+    return view('docs');
+})->name('docs');
