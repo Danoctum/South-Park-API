@@ -3,12 +3,16 @@
 namespace App\Console\Commands;
 
 use App\Models\Character;
+use App\Models\Episode;
 use App\Models\Location;
+use Carbon\Carbon;
+use Database\Seeders\CharacterSeeder;
 use DOMNode;
 use Goutte\Client;
 use Illuminate\Console\Command;
 use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -71,7 +75,8 @@ class ScrapeDataCommand extends Command
 
         $client = new Client();
         // $this->getLocations($client);
-        $this->getCharactersAndFamilies($client);
+        // $this->getCharactersAndFamilies($client);
+        // $this->getEpisodes($client);
         return 0;
     }
 
@@ -99,7 +104,7 @@ class ScrapeDataCommand extends Command
             $crawler->filter('#gallery-' . $i . ' > div')->each(function(Crawler $node) use ($client) {
                 $node = $node->filter('div > a')->last();
                 $characterCrawler = $client->click($node->selectLink($node->text())->link());
-                $name = $characterCrawler->filter('h2[data-source="name"]')->first()->text();
+                $name = $characterCrawler->filter('h1.page-header__title')->first()->text();
 
                 if(in_array($name, $this->blackListedCharacters)) {
                     return;
@@ -167,7 +172,56 @@ class ScrapeDataCommand extends Command
             });
 
             //  Doe relatives apart -> in een andere call; sommige bestaan namelijk nog niet.
+            //  Families toevoegen aan API? 
         }
-        return 'test';
+        
+        $this->info('Characters created!');
     }
+
+    public function getEpisodes(Client $client) {
+        $crawler = $client->request('GET', 'https://southpark.fandom.com/wiki/Season_One');
+        $season = 1;
+        $nextPageButtonCount = $crawler->filter('tbody tr td:last-child a')->count();
+        do {
+            //  Get the episode
+            $crawler->filter('table tbody tr[style="text-align:center;"]')->each(function(Crawler $crawler, $iteration) use ($season, $client) {
+                //  Filtering for each row with episosde details.
+                $episodeDetails = $crawler->filter('td:not([rowspan="2"])');
+                $name = $episodeDetails->getNode(0)->textContent;
+                $name = explode('"', $name)[1];
+                if($name === 'TBA') {   //  At the end there are some episodes that are TBA placeholders.
+                    return;
+                }
+                $airDate = $episodeDetails->getNode(1)->textContent;
+                $date = new Carbon($airDate);
+                $formattedAirDate = $date->toDateString();
+                $episode = new Episode([
+                    'name' => $name,
+                    'season' => $season,
+                    'episode' => $iteration + 1,
+                    'air_date' => $formattedAirDate,
+                ]);
+                $episode->save();
+
+                //  Get the characters that were in this episode; assumes that the characters are already in the db.
+                $episodePageCrawler = $client->click($crawler->filter('td[style="font-size:125%"]')->selectLink($name)->link());
+                $episodeScriptCrawler = $client->click($episodePageCrawler->filter('div.mw-parser-output a')->selectLink('Script')->link());
+                $episodeScriptCrawler->filter('div.mw-parser-output ul li')->each(function(Crawler $crawler) use ($episode) {
+                    if($characterInEpisode = DB::table('characters')->where('name', 'like',  '%' . $crawler->text() . '%')->first()) {
+                        $episode->characters()->attach($characterInEpisode->id);
+                    }
+                });
+            });
+
+
+            //  Go to next page.
+            $crawler = $client->click($crawler->filter('tbody tr td:last-child a')->first()->selectLink('Season')->link());
+            $season++;
+            $nextPageButtonCount = $crawler->filter('tbody tr td:last-child a')->count();
+        } while ($nextPageButtonCount > 0);
+        $this->info('Episodes created and characters are linked to the episodes!');
+
+    }
+
+
 }
