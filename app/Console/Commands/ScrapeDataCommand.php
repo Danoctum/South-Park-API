@@ -76,6 +76,7 @@ class ScrapeDataCommand extends Command
         $client = new Client();
         // $this->getLocations($client);
         // $this->getCharactersAndFamilies($client);
+        $this->getRelatives($client);
         // $this->getEpisodes($client);
         return 0;
     }
@@ -85,7 +86,7 @@ class ScrapeDataCommand extends Command
      */
     public function getLocations(Client $client) {
         $crawler = $client->request('GET', 'https://southpark.fandom.com/wiki/Portal:Locations');
-        $crawler->filter('div#gallery-0 div a')->each(function($node) {
+        $crawler->filter('div.mw-parser-output div.wikia-gallery a:not(.image)')->each(function($node) {
             if(!empty($node->text())) {
                 $location = new Location([
                     'name' => $node->text(),    //  Is the location name on the node.
@@ -99,83 +100,94 @@ class ScrapeDataCommand extends Command
 
     public function getCharactersAndFamilies(Client $client) {
         $crawler = $client->request('GET', 'https://southpark.fandom.com/wiki/Portal:Characters/Families');
-        $maxGalleryNumber = 30;
-        for($i = 0; $i <= $maxGalleryNumber; $i++) {
-            $crawler->filter('#gallery-' . $i . ' > div')->each(function(Crawler $node) use ($client) {
-                $node = $node->filter('div > a')->last();
-                $characterCrawler = $client->click($node->selectLink($node->text())->link());
-                $name = $characterCrawler->filter('h1.page-header__title')->first()->text();
+        $crawler->filter('div.mw-parser-output div.wikia-gallery > div')->each(function(Crawler $node) use ($client) {
+            $node = $node->filter('div > a')->last();
+            $characterCrawler = $client->click($node->selectLink($node->text())->link());
+            $name = $characterCrawler->filter('h1.page-header__title')->first()->text();
 
-                if(in_array($name, $this->blackListedCharacters)) {
-                    return;
-                }
+            if(in_array($name, $this->blackListedCharacters)) {
+                return;
+            }
 
-                $age = $characterCrawler->filter('div[data-source="age"] div')->first()->count()
-                    ? $characterCrawler->filter('div[data-source="age"] div')->first()->text()
-                    : null;
-                if($age !== null && Str::contains($age, '-')) { //  Some characters have a dash because age is unclear (4-5).
-                    $age = Str::before($age, '-');
-                }
-                if($age !== null && Str::contains($age, '[')) { //  Have to clean asterixes like [1].
-                    $age = Str::before($age, '[');
-                }
-                if($age !== null) {
-                    $age = filter_var($age, FILTER_SANITIZE_NUMBER_INT);    //  Remove characters from age like (deceased).
-                }
-                $sex = $characterCrawler->filter('div[data-source="gender"] div')->first()->count()
-                    ? explode("<small>", $characterCrawler->filter('div[data-source="gender"] div')->first()->html(), 2)[0]
-                    : null;
-                $hairColor = $characterCrawler->filter('div[data-source="hair"] div')->first()->count()
-                    ? $characterCrawler->filter('div[data-source="hair"] div')->first()->text()
-                    : null;
-                $occupation = $characterCrawler->filter('div[data-source="job"] div')->first()->count()
-                    ? explode("<br>", $characterCrawler->filter('div[data-source="job"] div')->first()->html(), 2)[0]
-                    : null;
-                $occupation = strip_tags($occupation);
-                if($occupation === '') {
-                    $occupation = null;
-                }
-                $grade = $characterCrawler->filter('div[data-source="grade"] div')->first()->count()
-                    ? $characterCrawler->filter('div[data-source="grade"] div')->first()->text()
-                    : null;
-                $religion = $characterCrawler->filter('div[data-source="religion"] div')->first()->count()
-                    ? explode("<br>", $characterCrawler->filter('div[data-source="religion"] div')->first()->html(), 2)[0]
-                    : null;
-                if($religion !== null && str_contains($religion, ';')) {
-                    $religion = substr($religion, 0 , strpos($religion, ';'));
-                }
-                $religion = strip_tags($religion);
-                if($religion === '') {
-                    $religion = null;
-                }
-                $voicedBy = $characterCrawler->filter('div[data-source="voice"] div')->first()->count()
-                    ? $characterCrawler->filter('div[data-source="voice"] div a')->first()->text()
-                    : null;
-                if($voicedBy !== null && str_contains($voicedBy, '[')) {
-                    $voicedBy = null;
-                }
-                if(in_array($voicedBy, $this->blackListedVoicedBy)) {
-                    $voicedBy = null;
-                }
+            $age = $characterCrawler->filter('div[data-source="age"] div')->first()->count()
+                ? $characterCrawler->filter('div[data-source="age"] div')->first()->text()
+                : null;
+            if($age !== null && Str::contains($age, '-')) { //  Some characters have a dash because age is unclear (4-5).
+                $age = Str::before($age, '-');
+            }
+            if($age !== null && Str::contains($age, '[')) { //  Have to clean asterixes like [1].
+                $age = Str::before($age, '[');
+            }
+            if($age !== null) {
+                $age = filter_var($age, FILTER_SANITIZE_NUMBER_INT);    //  Remove characters from age like (deceased).
+            }
+            $sex = $characterCrawler->filter('div[data-source="gender"] div')->first()->count()
+                ? explode("<small>", $characterCrawler->filter('div[data-source="gender"] div')->first()->html(), 2)[0]
+                : null;
+            $hairColor = $characterCrawler->filter('div[data-source="hair"] div')->first()->count()
+                ? $characterCrawler->filter('div[data-source="hair"] div')->first()->text()
+                : null;
+            $occupation = $characterCrawler->filter('div[data-source="job"] div')->first()->count()
+                ? explode("<br>", $characterCrawler->filter('div[data-source="job"] div')->first()->html(), 2)[0]
+                : null;
+            $occupation = strip_tags($occupation);
+            if($occupation === '') {
+                $occupation = null;
+            }
+            $grade = $characterCrawler->filter('div[data-source="grade"] div')->first()->count()
+                ? $characterCrawler->filter('div[data-source="grade"] div')->first()->text()
+                : null;
+            $religion = $characterCrawler->filter('div[data-source="religion"] div')->first()->count()
+                ? explode("<br>", $characterCrawler->filter('div[data-source="religion"] div')->first()->html(), 2)[0]
+                : null;
+            if($religion !== null && str_contains($religion, ';')) {
+                $religion = substr($religion, 0 , strpos($religion, ';'));
+            }
+            $religion = strip_tags($religion);
+            if($religion === '') {
+                $religion = null;
+            }
+            $voicedBy = $characterCrawler->filter('div[data-source="voice"] div')->first()->count()
+                ? $characterCrawler->filter('div[data-source="voice"] div a')->first()->text()
+                : null;
+            if($voicedBy !== null && str_contains($voicedBy, '[')) {
+                $voicedBy = null;
+            }
+            if(in_array($voicedBy, $this->blackListedVoicedBy)) {
+                $voicedBy = null;
+            }
 
-                $character = new Character([
-                    'name' => $name,
-                    'age' => $age,
-                    'sex' => $sex,
-                    'hair_color' => $hairColor,
-                    'occupation' => $occupation,
-                    'grade' => $grade,
-                    'religion' => $religion,
-                    'voiced_by' => $voicedBy
-                ]);
-                $character->save();
-            });
+            $character = new Character([
+                'name' => $name,
+                'age' => $age,
+                'sex' => $sex,
+                'hair_color' => $hairColor,
+                'occupation' => $occupation,
+                'grade' => $grade,
+                'religion' => $religion,
+                'voiced_by' => $voicedBy
+            ]);
+            $character->save();
+        });
 
-            //  Doe relatives apart -> in een andere call; sommige bestaan namelijk nog niet.
-            //  Families toevoegen aan API? 
-        }
-        
         $this->info('Characters created!');
+    }
+
+
+
+    public function getRelatives(Client $client) {
+        $crawler = $client->request('GET', 'https://southpark.fandom.com/wiki/Portal:Characters/Families');
+        $crawler->filter('div.mw-parser-output div.wikia-gallery div')->each(function(Crawler $node) use ($client) {
+            $node = $node->filter('div > a:not(.image)');
+            $characterCrawler = $client->click($node->selectLink($node->text())->link());
+            //  Get character by name.
+            $characterCrawler->filter('h2:contains("relatives")')->each(function(Crawler $node) {
+                $test = $node->first();
+                $test2 = null;
+                //  Set relative to singular; care for double ones like on https://southpark.fandom.com/wiki/Eric_Cartman.
+                    
+            });
+        });
     }
 
     public function getEpisodes(Client $client) {
@@ -205,11 +217,17 @@ class ScrapeDataCommand extends Command
 
                 //  Get the characters that were in this episode; assumes that the characters are already in the db.
                 $episodePageCrawler = $client->click($crawler->filter('td[style="font-size:125%"]')->selectLink($name)->link());
-                $episodeScriptCrawler = $client->click($episodePageCrawler->filter('div.mw-parser-output a')->selectLink('Script')->link());
-                $episodeScriptCrawler->filter('div.mw-parser-output ul li')->each(function(Crawler $crawler) use ($episode) {
-                    if($characterInEpisode = DB::table('characters')->where('name', 'like',  '%' . $crawler->text() . '%')->first()) {
-                        $episode->characters()->attach($characterInEpisode->id);
-                    }
+                $episodeExtrasCrawler = $client->click($episodePageCrawler->filter('div.mw-parser-output a')->selectLink('Extras')->link());
+                $episodeExtrasCrawler->filter('div.mw-parser-output div.wikia-gallery')->each(function(Crawler $crawler) use ($episode) {
+                    $crawler->filter('div > a:not(.image)')->each(function(Crawler $crawler) use ($episode) {
+                        if($characterInEpisode = DB::table('characters')->where('name', 'like',  '%' . $crawler->text() . '%')->first()) {
+                            $episode->characters()->syncWithoutDetaching($characterInEpisode->id);
+                        }
+
+                        if($locationInEspisode = DB::table('locations')->where('name', $crawler->text())->first()) {
+                            $episode->locations()->syncWithoutDetaching($locationInEspisode->id);
+                        }
+                    });
                 });
             });
 
