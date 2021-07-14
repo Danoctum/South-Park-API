@@ -9,7 +9,6 @@ class Location extends Model
 {
     use HasFactory;
     public $baseEndpoint = 'locations/';
-    protected $appends =['first_appearance_episode_url'];
     protected $guarded = [];
 
     public function episodes() {
@@ -18,10 +17,6 @@ class Location extends Model
 
     public function createLocationShowUrlFromId($id) {
         return route('locationShow', ['id' => $id]);
-    }
-
-    public function getFirstAppearanceEpisodeUrlAttribute() {
-        return route('episodeShow', ['id' => $this->first_appearance_episode_id]);
     }
 
     public function scopeSearch($query, $keyword)

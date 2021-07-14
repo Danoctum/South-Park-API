@@ -27,30 +27,46 @@
 <samp class="response-code">{
   "data": {
     "id": 1,
-    "name": "Stan",
-    "full_name": "Stanley Marsh",
-    "age": 10,
-    "sex": "male",
-    "hair_color": "Black",
-    "occupation": "Student",
-    "grade": "4th grade",
-    "religion": "Roman Catholic",
-    "voiced_by": "Trey Parker",
-    "first_appearance_episode_id": 1,
-    "created_at": null,
-    "updated_at": null,
-    "url": "{{ env('API_URL') }}characters/1",
-    "first_appearance_episode_url": "{{ env('API_URL') }}episodes/1",
+    "name": "Gerald Broflovski",
+    "age": null,
+    "sex": "Male",
+    "hair_color": "Brown",
+    "occupation": "Lawyer",
+    "grade": null,
+    "religion": "Judaism",
+    "voiced_by": null,
+    "created_at": "2021-07-12T17:48:58+00:00",
+    "updated_at": "2021-07-12T17:48:58+00:00",
+    "url": "{{ env('API_URL') }}/characters/1",
     "relatives": [
       {
-        "url": "{{ env('API_URL') }}characters/5",
-        "relation": "Son"
+        "url": "{{ env('API_URL') }}/characters/2",
+        "relation": "Husband"
+      },
+      {
+        "url": "{{ env('API_URL') }}/characters/3",
+        "relation": "Father"
+      },
+      {
+        "url": "{{ env('API_URL') }}/characters/4",
+        "relation": "Adoptive Father"
+      },
+      {
+        "url": "{{ env('API_URL') }}/characters/6",
+        "relation": "Son In-Law"
+      },
+      {
+        "url": "{{ env('API_URL') }}/characters/7",
+        "relation": "Brother"
+      },
+      {
+        "url": "{{ env('API_URL') }}/characters/8",
+        "relation": "Uncle"
       }
     ],
     "episodes": [
-      "{{ env('API_URL') }}episode/1",
-      "{{ env('API_URL') }}episode/2",
-      "{{ env('API_URL') }}episode/3"
+      "{{ env('API_URL') }}/episodes/9",
+      "{{ env('API_URL') }}/episodes/13",
     ]
   }
 }</samp></pre>

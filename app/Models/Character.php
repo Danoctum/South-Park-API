@@ -9,7 +9,7 @@ class Character extends Model
 {
     use HasFactory;
     public $baseEndpoint = 'characters/';
-    protected $appends = ['url', 'first_appearance_episode_url'];   //  This in combination with getUrlAttribute() becomes a 'virtual field'
+    protected $appends = ['url'];   //  This in combination with getUrlAttribute() becomes a 'virtual field'
     protected $guarded = [];
 
     public function episodes() {
@@ -22,10 +22,6 @@ class Character extends Model
     
     public function getUrlAttribute() {
         return route('characterShow', ['id' => $this->id]);
-    }
-
-    public function getFirstAppearanceEpisodeUrlAttribute() {
-        return route('episodeShow', ['id' => $this->first_appearance_episode_id]);
     }
 
     public function createCharacterShowUrlFromId($id) {
