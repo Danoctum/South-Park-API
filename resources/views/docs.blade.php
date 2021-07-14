@@ -40,21 +40,20 @@
     "name": "Cartman Gets an Anal Probe",
     "season": 1,
     "episode": 1,
-    "written_by": "Trey Parker",
     "air_date": "1997-08-13",
-    "created_at": null,
-    "updated_at": null,
+    "created_at": "2021-07-12T17:50:06+00:00",
+    "updated_at": "2021-07-12T17:50:06+00:00",
     "characters": [
-      "{{ env('API_URL') }}characters/1",
-      "{{ env('API_URL') }}characters/2",
+      "{{ env('API_URL') }}characters/10",
       "{{ env('API_URL') }}characters/3",
-      "{{ env('API_URL') }}characters/4"
+      "{{ env('API_URL') }}characters/27",
+      "{{ env('API_URL') }}characters/163"
     ],
     "locations": [
-      "{{ env('API_URL') }}locations/1",
       "{{ env('API_URL') }}locations/2",
       "{{ env('API_URL') }}locations/3",
-      "{{ env('API_URL') }}locations/4"
+      "{{ env('API_URL') }}locations/6",
+      "{{ env('API_URL') }}locations/623"
     ]
   }
 }</samp></pre>
@@ -97,30 +96,46 @@
             <pre>{
   "data": {
     "id": 1,
-    "name": "Stan",
-    "full_name": "Stanley Marsh",
-    "age": 10,
-    "sex": "male",
-    "hair_color": "Black",
-    "occupation": "Student",
-    "grade": "4th grade",
-    "religion": "Roman Catholic",
-    "voiced_by": "Trey Parker",
-    "first_appearance_episode_id": 1,
-    "created_at": null,
-    "updated_at": null,
-    "url": "{{ env('API_URL') }}characters/1",
-    "first_appearance_episode_url": "{{ env('API_URL') }}episodes/1",
+    "name": "Gerald Broflovski",
+    "age": null,
+    "sex": "Male",
+    "hair_color": "Brown",
+    "occupation": "Lawyer",
+    "grade": null,
+    "religion": "Judaism",
+    "voiced_by": null,
+    "created_at": "2021-07-12T17:48:58+00:00",
+    "updated_at": "2021-07-12T17:48:58+00:00",
+    "url": "{{ env('API_URL') }}/characters/1",
     "relatives": [
       {
-        "url": "{{ env('API_URL') }}characters/5",
-        "relation": "Son"
+        "url": "{{ env('API_URL') }}/characters/2",
+        "relation": "Husband"
+      },
+      {
+        "url": "{{ env('API_URL') }}/characters/3",
+        "relation": "Father"
+      },
+      {
+        "url": "{{ env('API_URL') }}/characters/4",
+        "relation": "Adoptive Father"
+      },
+      {
+        "url": "{{ env('API_URL') }}/characters/6",
+        "relation": "Son In-Law"
+      },
+      {
+        "url": "{{ env('API_URL') }}/characters/7",
+        "relation": "Brother"
+      },
+      {
+        "url": "{{ env('API_URL') }}/characters/8",
+        "relation": "Uncle"
       }
     ],
     "episodes": [
-      "{{ env('API_URL') }}episodes/1",
-      "{{ env('API_URL') }}episodes/2",
-      "{{ env('API_URL') }}episodes/3"
+      "{{ env('API_URL') }}/episodes/9",
+      "{{ env('API_URL') }}/episodes/13",
     ]
   }
 }</pre>
@@ -128,7 +143,6 @@
             <ul>
                 <li><code>id</code> - The id of this character</li>
                 <li><code>name</code> - The name this character is known as</li>
-                <li><code>full_name</code> - The full name of this character. The difference between this field and the <code>name</code> field is that the name refers to the commonly used name for this character.</li>
                 <li><code>age</code> - The age of this character in years</li>
                 <li><code>sex</code> - The sex of this character (if known). Will be null if it's not known.</li>
                 <li><code>hair_color</code> - The hair color of this character</li>
@@ -136,18 +150,15 @@
                 <li><code>grade</code> - The grade this character is in (if in school)</li>
                 <li><code>religion</code> - The main religion of this character (temporary changes of religion not tracked)</li>
                 <li><code>voiced_by</code> - The voice actor name of this character</li>
-                <li><code>first_appearance_episode_id</code> - The id of the episode this character first appeared in</li>
-                <li><code>created_at</code> - The ISO 8601 date format of the time that this resource was created</li>
-                <li><code>updated_at</code> - The ISO 8601 date format of the time that this resource was updated</li>
+                <li><code>created_at</code> - The ISO 8601 datetime format of the time that this resource was created</li>
+                <li><code>updated_at</code> - The ISO 8601 datetime format of the time that this resource was updated</li>
                 <li><code>url</code> - The url of this resource</li>
-                <li><code>first_appearance_episode_url</code> - The url of the episode this character first appeared in</li>
-                <li><code>relatives</code> - An array of relatives with the relative url and relation for this character</li>
+                <li><code>relatives</code> - An array of relatives with the relative url and relation for this character (from the viewpoint of the queried character)</li>
                 <li><code>episodes</code> - An array of urls of episodes this character has appeared in</li>
             </ul>
             <p><strong>Search fields:</strong></p>
             <ul>
                 <li><code>name</code></li>
-                <li><code>full_name</code></li>
             </ul>
             <hr/>
 
@@ -169,21 +180,20 @@
     "name": "Cartman Gets an Anal Probe",
     "season": 1,
     "episode": 1,
-    "written_by": "Trey Parker",
     "air_date": "1997-08-13",
-    "created_at": null,
-    "updated_at": null,
+    "created_at": "2021-07-12T17:50:06+00:00",
+    "updated_at": "2021-07-12T17:50:06+00:00",
     "characters": [
-      "{{ env('API_URL') }}characters/1",
-      "{{ env('API_URL') }}characters/2",
+      "{{ env('API_URL') }}characters/10",
       "{{ env('API_URL') }}characters/3",
-      "{{ env('API_URL') }}characters/4"
+      "{{ env('API_URL') }}characters/27",
+      "{{ env('API_URL') }}characters/163"
     ],
     "locations": [
-      "{{ env('API_URL') }}locations/1",
       "{{ env('API_URL') }}locations/2",
       "{{ env('API_URL') }}locations/3",
-      "{{ env('API_URL') }}locations/4"
+      "{{ env('API_URL') }}locations/6",
+      "{{ env('API_URL') }}locations/623"
     ]
   }
 }</pre>
@@ -193,10 +203,9 @@
                 <li><code>name</code> - The title of this episode</li>
                 <li><code>season</code> - The season this episode is a part of</li>
                 <li><code>episode</code> - The episode number in the season</li>
-                <li><code>written_by</code> - Comma seperated string of the writers of this episode</li>
-                <li><code>air_date</code> - ISO 8601 format of the date this episode aired</li>
-                <li><code>created_at</code> - The ISO 8601 date format of the time that this resource was created</li>
-                <li><code>updated_at</code> - The ISO 8601 date format of the time that this resource was updated</li>
+                <li><code>air_date</code> - ISO 8601 date format of the date this episode aired</li>
+                <li><code>created_at</code> - The ISO 8601 datetime format of the time that this resource was created</li>
+                <li><code>updated_at</code> - The ISO 8601 datetime format of the time that this resource was updated</li>
                 <li><code>characters</code> - An array of characters that made an appearance this episode</li>
                 <li><code>locations</code> - An array of locations that made an appearance this episode</li>
             </ul>
@@ -216,19 +225,14 @@
                 <li><code>/locations/schema</code> - get the JSON schema of this resource</li>
             </ul>
             <p><strong>Example request:</strong></p>
-            <pre>curl {{ env('API_URL') }}locations/1</pre>
+            <pre>curl {{ env('API_URL') }}locations/2</pre>
             <p><strong>Example response:</strong></p>
             <pre>{
   "data": {
-    "id": 1,
+    "id": 2,
     "name": "Bus Stop",
-    "address": null,
-    "type": "Public",
-    "town": "South Park",
-    "first_appearance_episode_id": 1,
-    "created_at": null,
-    "updated_at": null,
-    "first_appearance_episode_url": "{{ env('API_URL') }}episodes/1",
+    "created_at": "2021-07-12T17:48:56+00:00",
+    "updated_at": "2021-07-12T17:48:56+00:00",
     "episodes": [
       "{{ env('API_URL') }}episodes/1",
       "{{ env('API_URL') }}episodes/2"
@@ -239,10 +243,6 @@
             <ul>
                 <li><code>id</code> - The id of this location</li>
                 <li><code>name</code> - The name of this location</li>
-                <li><code>address</code> - The address of the location (if known and applicable)</li>
-                <li><code>type</code> - The type of location (i.e. residential, city, ...)</li>
-                <li><code>town</code> - The town this location is in (if known and applicable)</li>
-                <li><code>first_appearance_episode_id</code> - Id of the episode this location first appeared in</li>
                 <li><code>created_at</code> - The ISO 8601 date format of the time that this resource was created</li>
                 <li><code>updated_at</code> - The ISO 8601 date format of the time that this resource was updated</li>
                 <li><code>episodes</code> - An array of episodes that this location appeared in</li>
