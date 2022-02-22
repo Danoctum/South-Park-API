@@ -68,9 +68,9 @@ class ScrapeDataCommand extends Command
         $this->warn('The command will give lots of output so you can see everything that is added from the command line.');
         try {
             $client = new Client();
-            $this->getLocations($client);
-            $this->getCharactersAndFamilies($client);
-            $this->getRelatives($client);
+//            $this->getLocations($client);
+//            $this->getCharactersAndFamilies($client);
+//            $this->getRelatives($client);
             $this->getEpisodes($client);
         } catch (Exception $error) {
             $this->warn($error);
@@ -187,7 +187,7 @@ class ScrapeDataCommand extends Command
     }
 
     /**
-     * Sometimes selectors return a list of items. 
+     * Sometimes selectors return a list of items.
      * In that case get the first item (deemed as most important).
      * Other cleaning like ; and [] are done outside of this function.
      */
@@ -254,13 +254,16 @@ class ScrapeDataCommand extends Command
             //  Get the episode
             $crawler->filter('table tbody tr[style="text-align:center;"]')->each(function (Crawler $crawler, $iteration) use ($season, $client) {
                 //  Filtering for each row with episosde details.
-                $episodeDetails = $crawler->filter('td:not([rowspan="2"])');
-                $name = $episodeDetails->getNode(0)->textContent;
+                $episodeDetails = $crawler->filter('td');
+                $episodeDescription = $crawler->parents()->first()->filter('p')->getNode($iteration)->textContent;
+                $episodeImageUrl = $episodeDetails->filter('.image')->getNode(0)->attributes[0]->value;
+
+                $name = $episodeDetails->getNode(1)->textContent;
                 $name = explode('"', $name)[1];
                 if ($name === 'TBA') {   //  At the end there are some episodes that are TBA placeholders.
                     return;
                 }
-                $airDate = $episodeDetails->getNode(1)->textContent;
+                $airDate = $episodeDetails->getNode(2)->textContent;
                 $date = new Carbon($airDate);
                 $formattedAirDate = $date->toDateString();
                 $episode = new Episode([
@@ -268,6 +271,8 @@ class ScrapeDataCommand extends Command
                     'season' => $season,
                     'episode' => $iteration + 1,
                     'air_date' => $formattedAirDate,
+                    'description' => $episodeDescription,
+                    'thumbnail_url' => $episodeImageUrl,
                 ]);
                 $episode->save();
                 $this->comment('Added episode: ' . $name);
