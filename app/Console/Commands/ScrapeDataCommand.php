@@ -68,9 +68,9 @@ class ScrapeDataCommand extends Command
         $this->warn('The command will give lots of output so you can see everything that is added from the command line.');
         try {
             $client = new Client();
-//            $this->getLocations($client);
-//            $this->getCharactersAndFamilies($client);
-//            $this->getRelatives($client);
+            $this->getLocations($client);
+            $this->getCharactersAndFamilies($client);
+            $this->getRelatives($client);
             $this->getEpisodes($client);
         } catch (Exception $error) {
             $this->warn($error);
