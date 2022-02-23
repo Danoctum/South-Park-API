@@ -68,9 +68,9 @@ class ScrapeDataCommand extends Command
         $this->warn('The command will give lots of output so you can see everything that is added from the command line.');
         try {
             $client = new Client();
-            $this->getLocations($client);
-            $this->getCharactersAndFamilies($client);
-            $this->getRelatives($client);
+//            $this->getLocations($client);
+//            $this->getCharactersAndFamilies($client);
+//            $this->getRelatives($client);
             $this->getEpisodes($client);
         } catch (Exception $error) {
             $this->warn($error);
@@ -257,7 +257,7 @@ class ScrapeDataCommand extends Command
                 $episodeDetails = $crawler->filter('td');
                 $episodeDescription = $crawler->parents()->first()->filter('p')->getNode($iteration)->textContent;
                 $episodeImageUrl = $episodeDetails->filter('.image')->getNode(0)->attributes[0]->value;
-                $wikiUrl = $crawler->getUri();
+                $wikiUrl = 'https://southpark.fandom.com';
                 $wikiUrl .= $episodeDetails->filter('a')->last()->attr('href');
 
                 $name = $episodeDetails->getNode(1)->textContent;
@@ -282,22 +282,29 @@ class ScrapeDataCommand extends Command
                 //  Get the characters that were in this episode; assumes that the characters are already in the db.
                 $episodePageCrawler = $client->click($crawler->filter('td[style="font-size:125%"]')->selectLink($name)->link());
                 $extrasLinkSelector = $episodePageCrawler->filter('div.mw-parser-output a')->selectLink('Extras');
-                if ($extrasLinkSelector->count() === 0) {   //  Check if Extras tab exists
-                    return;
+                if ($extrasLinkSelector->count() > 0) {   //  Check if Extras tab exists
+                    $episodeExtrasCrawler = $client->click($extrasLinkSelector->link());
+                    $episodeExtrasCrawler->filter('div.mw-parser-output div.wikia-gallery')->each(function (Crawler $crawler) use ($episode) {
+                        $crawler->filter('div > a:not(.image)')->each(function (Crawler $crawler) use ($episode) {
+                            if ($locationInEspisode = Location::where('name', $crawler->text())->first()) {
+                                $episode->locations()->syncWithoutDetaching($locationInEspisode->id);
+                            }
+                        });
+                    });
                 }
 
-                $episodeExtrasCrawler = $client->click($extrasLinkSelector->link());
-                $episodeExtrasCrawler->filter('div.mw-parser-output div.wikia-gallery')->each(function (Crawler $crawler) use ($episode) {
-                    $crawler->filter('div > a:not(.image)')->each(function (Crawler $crawler) use ($episode) {
-                        if ($characterInEpisode = Character::where('name', 'like',  '%' . $crawler->text() . '%')->first()) {
+                $client->request("GET", "{$wikiUrl}/Script")->filter(".mw-parser-output")->first()->filter('ul > li')->each(
+                    function (Crawler $crawler, $iteration) use ($episode) {
+                        if($crawler->filter('a')->getNode(0) == null) {
+                            return;
+                        }
+                        $characterName = $crawler->filter('a')->getNode(0)->textContent;
+                        if ($characterInEpisode = Character::where('name', 'like',  '%' . $characterName . '%')->first()) {
                             $episode->characters()->syncWithoutDetaching($characterInEpisode->id);
                         }
+                    }
+                );
 
-                        if ($locationInEspisode = Location::where('name', $crawler->text())->first()) {
-                            $episode->locations()->syncWithoutDetaching($locationInEspisode->id);
-                        }
-                    });
-                });
             });
 
             //  Go to next page.
