@@ -14,8 +14,9 @@ class AddDescriptionAndThumbnailToEpisodesTable extends Migration
     public function up()
     {
         Schema::table('episodes', function (Blueprint $table) {
-            $table->mediumText('description')->nullable();
-            $table->string('thumbnail_url')->nullable();
+            $table->mediumText('description')->after('air_date')->nullable();
+            $table->string('thumbnail_url')->after('air_date')->nullable();
+            $table->string('wiki_url')->after('air_date')->nullable();
         });
     }
 

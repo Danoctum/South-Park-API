@@ -257,6 +257,8 @@ class ScrapeDataCommand extends Command
                 $episodeDetails = $crawler->filter('td');
                 $episodeDescription = $crawler->parents()->first()->filter('p')->getNode($iteration)->textContent;
                 $episodeImageUrl = $episodeDetails->filter('.image')->getNode(0)->attributes[0]->value;
+                $wikiUrl = $crawler->getUri();
+                $wikiUrl .= $episodeDetails->filter('a')->last()->attr('href');
 
                 $name = $episodeDetails->getNode(1)->textContent;
                 $name = explode('"', $name)[1];
@@ -273,6 +275,7 @@ class ScrapeDataCommand extends Command
                     'air_date' => $formattedAirDate,
                     'description' => $episodeDescription,
                     'thumbnail_url' => $episodeImageUrl,
+                    'wiki_url' => $wikiUrl,
                 ]);
                 $episode->save();
                 $this->comment('Added episode: ' . $name);

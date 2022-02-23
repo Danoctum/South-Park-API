@@ -4,6 +4,11 @@
 @section('title', 'About')
 
 @section('content')
+    @php
+        $episodesUrl = "episodes/1";
+        $locationsUrl = "locations/2";
+        $charactersUrl = "characters/1";
+    @endphp
     <div class="row">
         <div class="col-md-3">
             <h5><a href="#general">General</a></h5>
@@ -32,31 +37,9 @@
             <h4 id="gettingStarted">Getting started</h4>
             <p>Lets make our first request to the South Park API!</p>
             <p>To get started making use of the API, use a tool that allows you to make an API request, like curl, Insomnia or the browser. In the below example we're trying to get the first episode with curl:</p>
-            <pre><samp>curl {{ env('API_URL') }}episodes/1</samp></pre>
+            <pre><samp>curl {{ env('API_URL') }}{{$episodesUrl}}</samp></pre>
             <p>Here's the response we get:</p>
-            <pre><samp>{
-  "data": {
-    "id": 1,
-    "name": "Cartman Gets an Anal Probe",
-    "season": 1,
-    "episode": 1,
-    "air_date": "1997-08-13",
-    "created_at": "2021-07-12T17:50:06+00:00",
-    "updated_at": "2021-07-12T17:50:06+00:00",
-    "characters": [
-      "{{ env('API_URL') }}characters/10",
-      "{{ env('API_URL') }}characters/3",
-      "{{ env('API_URL') }}characters/27",
-      "{{ env('API_URL') }}characters/163"
-    ],
-    "locations": [
-      "{{ env('API_URL') }}locations/2",
-      "{{ env('API_URL') }}locations/3",
-      "{{ env('API_URL') }}locations/6",
-      "{{ env('API_URL') }}locations/623"
-    ]
-  }
-}</samp></pre>
+            <pre><samp class="episodeResponse"></samp></pre>
             <p>That's it! You've done an API call and you can parse the returned data with whatever language you prefer. Your response might look different. Don't worry as there might have been added more code to the API after this is written.</p>
 
             <h4 id="baseUrl">Base URL</h4>
@@ -64,7 +47,7 @@
             <p>The Base URL for the South Park API is:</p>
             <pre><samp>{{ env('API_URL') }}</samp></pre>
             <p>The documentation below assumes you are prepending the base URL to your API requests.</p>
-            
+
             <h4 id="rateLimiting">Rate limiting</h4>
             <p>The API currently does not have any rate limiting. If you are making heavy use of the API, please consider caching the results to limit server load. This might be introduced in the future if there are any signs of abuse.</p>
 
@@ -91,54 +74,9 @@
                 <li><code>/characters/schema</code> - get the JSON schema of this resource</li>
             </ul>
             <p><strong>Example request:</strong></p>
-            <pre>curl {{ env('API_URL') }}characters/1</pre>
+            <pre>curl {{ env('API_URL') }}{{$charactersUrl}}</pre>
             <p><strong>Example response:</strong></p>
-            <pre>{
-  "data": {
-    "id": 1,
-    "name": "Gerald Broflovski",
-    "age": null,
-    "sex": "Male",
-    "hair_color": "Brown",
-    "occupation": "Lawyer",
-    "grade": null,
-    "religion": "Judaism",
-    "voiced_by": null,
-    "created_at": "2021-07-12T17:48:58+00:00",
-    "updated_at": "2021-07-12T17:48:58+00:00",
-    "url": "{{ env('API_URL') }}/characters/1",
-    "relatives": [
-      {
-        "url": "{{ env('API_URL') }}/characters/2",
-        "relation": "Husband"
-      },
-      {
-        "url": "{{ env('API_URL') }}/characters/3",
-        "relation": "Father"
-      },
-      {
-        "url": "{{ env('API_URL') }}/characters/4",
-        "relation": "Adoptive Father"
-      },
-      {
-        "url": "{{ env('API_URL') }}/characters/6",
-        "relation": "Son In-Law"
-      },
-      {
-        "url": "{{ env('API_URL') }}/characters/7",
-        "relation": "Brother"
-      },
-      {
-        "url": "{{ env('API_URL') }}/characters/8",
-        "relation": "Uncle"
-      }
-    ],
-    "episodes": [
-      "{{ env('API_URL') }}/episodes/9",
-      "{{ env('API_URL') }}/episodes/13",
-    ]
-  }
-}</pre>
+            <pre class="characterResponse"></pre>
             <p><strong>Attributes:</strong></p>
             <ul>
                 <li><code>id</code> - The id of this character</li>
@@ -172,31 +110,9 @@
                 <li><code>/episodes/schema</code> - get the JSON schema of this resource</li>
             </ul>
             <p><strong>Example request:</strong></p>
-            <pre>curl {{ env('API_URL') }}episodes/1</pre>
+            <pre>curl {{ env('API_URL') }}{{$episodesUrl}}</pre>
             <p><strong>Example response:</strong></p>
-            <pre>{
-  "data": {
-    "id": 1,
-    "name": "Cartman Gets an Anal Probe",
-    "season": 1,
-    "episode": 1,
-    "air_date": "1997-08-13",
-    "created_at": "2021-07-12T17:50:06+00:00",
-    "updated_at": "2021-07-12T17:50:06+00:00",
-    "characters": [
-      "{{ env('API_URL') }}characters/10",
-      "{{ env('API_URL') }}characters/3",
-      "{{ env('API_URL') }}characters/27",
-      "{{ env('API_URL') }}characters/163"
-    ],
-    "locations": [
-      "{{ env('API_URL') }}locations/2",
-      "{{ env('API_URL') }}locations/3",
-      "{{ env('API_URL') }}locations/6",
-      "{{ env('API_URL') }}locations/623"
-    ]
-  }
-}</pre>
+            <pre class="episodeResponse"></pre>
             <p><strong>Attributes:</strong></p>
             <ul>
                 <li><code>id</code> - The id of this episode</li>
@@ -204,6 +120,9 @@
                 <li><code>season</code> - The season this episode is a part of</li>
                 <li><code>episode</code> - The episode number in the season</li>
                 <li><code>air_date</code> - ISO 8601 date format of the date this episode aired</li>
+                <li><code>description</code> - The description of this episode</li>
+                <li><code>thumbnail_url</code> - Thumnail URL that references the wiki this API scrapes. These images are quite high resolution, so keep in mind that loading these thumbnails requires quite some bandwidth.</li>
+                <li><code>wiki_url</code> - URL to the wiki for this episode.</li>
                 <li><code>created_at</code> - The ISO 8601 datetime format of the time that this resource was created</li>
                 <li><code>updated_at</code> - The ISO 8601 datetime format of the time that this resource was updated</li>
                 <li><code>characters</code> - An array of characters that made an appearance this episode</li>
@@ -225,20 +144,9 @@
                 <li><code>/locations/schema</code> - get the JSON schema of this resource</li>
             </ul>
             <p><strong>Example request:</strong></p>
-            <pre>curl {{ env('API_URL') }}locations/2</pre>
+            <pre>curl {{ env('API_URL') }}{{$locationsUrl}}</pre>
             <p><strong>Example response:</strong></p>
-            <pre>{
-  "data": {
-    "id": 2,
-    "name": "Bus Stop",
-    "created_at": "2021-07-12T17:48:56+00:00",
-    "updated_at": "2021-07-12T17:48:56+00:00",
-    "episodes": [
-      "{{ env('API_URL') }}episodes/1",
-      "{{ env('API_URL') }}episodes/2"
-    ]
-  }
-}</pre>
+            <pre class="locationResponse"></pre>
             <p><strong>Attributes:</strong></p>
             <ul>
                 <li><code>id</code> - The id of this location</li>
@@ -254,4 +162,23 @@
             <hr/>
         </div>
     </div>
+    @push('scripts')
+        <script>
+            $(document).ready(function(){
+                const processGetExample = (endpoint, elementClass) => {
+                    axios.get('https://spapi.dev/api/' + endpoint)
+                        .then((data) => {
+                            $(`.${elementClass}`).text(JSON.stringify(data.data, null, 2));
+                        })
+                        .catch((err) => {
+                            $(`.${elementClass}`).text(JSON.stringify(err, null, 2));
+                        })
+                }
+
+                processGetExample("{{ $locationsUrl }}", "locationResponse");
+                processGetExample("{{ $episodesUrl }}", "episodeResponse");
+                processGetExample("{{ $charactersUrl }}", "characterResponse");
+            });
+        </script>
+    @endpush
 @endsection
