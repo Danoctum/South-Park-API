@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Character;
 use App\Models\Episode;
+use App\Models\Family;
 use App\Models\Location;
 use Carbon\Carbon;
 use Database\Seeders\CharacterSeeder;
@@ -103,13 +104,25 @@ class ScrapeDataCommand extends Command
      * Function to get the characters.
      * Loops through every gallery on the families URL.
      * Then visits every character in the gallery and gets their details.
-     * TODO: get families and add them.
      */
     public function getCharactersAndFamilies(Client $client)
     {
         $this->info('Attempting to retrieve characters and families.');
         $crawler = $client->request('GET', $this->familiesUrl);
         $crawler->filter('div.mw-parser-output div.wikia-gallery > div')->each(function (Crawler $node) use ($client) {
+            $familyNameNode = $node->closest('table.headerscontent');
+            //  For the last characters there is no defined family, adding the characters without a family reference.
+            if($familyNameNode !== null) {
+                $familyName = $familyNameNode->first()->getNode(0)->previousSibling->previousSibling->textContent;
+                $family = DB::table('families')->where('name', $familyName)->first();
+                if(!$family) {
+                    $family = new Family([
+                        'name' => $familyName,
+                    ]);
+                    $family->save();
+                    $this->comment('Added family: ' . $family->name);
+                }
+            }
             $node = $node->filter('div > a')->last();
             $characterCrawler = $client->click($node->selectLink($node->text())->link());
             $name = $this->getCharacterProperty($characterCrawler, 'h1.page-header__title');
@@ -166,7 +179,8 @@ class ScrapeDataCommand extends Command
                 'occupation' => $occupation,
                 'grade' => $grade,
                 'religion' => $religion,
-                'voiced_by' => $voicedBy
+                'voiced_by' => $voicedBy,
+                'family_id' => isset($family) ? $family->id : null,
             ]);
             $character->save();
             $this->comment('Added character: ' . $character->name);

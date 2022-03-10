@@ -14,7 +14,8 @@
         <h4>Statistics</h4>
         <p>Amount of characters: {{ $characterCount }}<br/>
         Amount of episodes: {{ $episodeCount }}<br/>
-        Amount of locations: {{ $locationCount }}</p>
+        Amount of locations: {{ $locationCount }}<br/>
+        Amount of families: {{ $familyCount }}</p>
     </div>
     <div>
         <h4>What can you use this for?</h4>

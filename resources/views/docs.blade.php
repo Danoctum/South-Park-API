@@ -8,6 +8,7 @@
         $episodesUrl = "episodes/1";
         $locationsUrl = "locations/2";
         $charactersUrl = "characters/1";
+        $familiesUrl = "families/1";
     @endphp
     <div class="row">
         <div class="col-md-3">
@@ -25,6 +26,7 @@
             <ul class="list-group">
                 <li class="list-group-item"><a href="#characters">Characters</a></li>
                 <li class="list-group-item"><a href="#episodes">Episodes</a></li>
+                <li class="list-group-item"><a href="#families">Families</a></li>
                 <li class="list-group-item"><a href="#locations">Locations</a></li>
             </ul>
         </div>
@@ -132,6 +134,32 @@
             </ul>
             <hr/>
 
+            {{-- FAMILIES --}}
+            <h4 id="families">Families</h4>
+            <p>A family in the South Park universe.</p>
+            <p><strong>Endpoints:</strong></p>
+            <ul>
+                <li><code>/families</code> - get all the family resources</li>
+                <li><code>/families/{id}</code> - get a specific family resource</li>
+            </ul>
+            <p><strong>Example request:</strong></p>
+            <pre>curl {{ env('API_URL') }}{{$familiesUrl}}</pre>
+            <p><strong>Example response:</strong></p>
+            <pre class="familyResponse"></pre>
+            <p><strong>Attributes:</strong></p>
+            <ul>
+                <li><code>id</code> - The id of this family</li>
+                <li><code>name</code> - The name of this family</li>
+                <li><code>created_at</code> - The ISO 8601 datetime format of the time that this resource was created</li>
+                <li><code>updated_at</code> - The ISO 8601 datetime format of the time that this resource was updated</li>
+                <li><code>characters</code> - An array of characters that is a member of this family</li>
+            </ul>
+            <p><strong>Search fields:</strong></p>
+            <ul>
+                <li><code>name</code></li>
+            </ul>
+            <hr/>
+
             {{-- LOCATIONS --}}
             <h4 id="locations">Locations</h4>
             <p>A location in the South Park universe.</p>
@@ -163,7 +191,7 @@
         <script>
             $(document).ready(function(){
                 const processGetExample = (endpoint, elementClass) => {
-                    axios.get('https://spapi.dev/api/' + endpoint)
+                    axios.get('{{ env('API_URL') }}' + endpoint)
                         .then((data) => {
                             $(`.${elementClass}`).text(JSON.stringify(data.data, null, 2));
                         })
@@ -175,6 +203,7 @@
                 processGetExample("{{ $locationsUrl }}", "locationResponse");
                 processGetExample("{{ $episodesUrl }}", "episodeResponse");
                 processGetExample("{{ $charactersUrl }}", "characterResponse");
+                processGetExample("{{ $familiesUrl }}", "familyResponse");
             });
         </script>
     @endpush

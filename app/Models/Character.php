@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Character extends Model
 {
     use HasFactory;
-    public $baseEndpoint = 'characters/';
     protected $appends = ['url'];   //  This in combination with getUrlAttribute() becomes a 'virtual field'
     protected $guarded = [];
 
@@ -19,7 +18,11 @@ class Character extends Model
     public function relatives() {
         return $this->belongsToMany('App\Models\Character', 'character_relative', 'relative_id', 'character_id')->withPivot('relation');
     }
-    
+
+    public function family() {
+        return $this->belongsTo(Family::class, 'families_characters');
+    }
+
     public function getUrlAttribute() {
         return route('characterShow', ['id' => $this->id]);
     }

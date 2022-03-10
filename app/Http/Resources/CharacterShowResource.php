@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Family;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Episode;
 
@@ -34,9 +35,14 @@ class CharacterShowResource extends JsonResource
             array_push($episodes, $episodeClass->createEpisodeShowUrlFromId($episode->id));
         }
 
+        $familyClass = new Family();
+        $familyUrl = $familyClass->createFamilyUrlFromId($this->family_id);
+        unset($this->family_id);
+
         return array_merge(
             $this->resource->attributesToArray(),
             [
+                'family' => $familyUrl,
                 'relatives' => $relatives,
                 'episodes' => $episodes,
             ]

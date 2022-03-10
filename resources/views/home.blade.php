@@ -8,7 +8,7 @@
         <div>
             <h3>The complete South Park API!</h3>
             <p>All the South Park data you ever wanted.</p>
-            <p>Includes: <strong>Charcaters, Episodes and Locations!</strong></p>
+            <p>Includes: <strong>Charcaters, Episodes, Families and Locations!</strong></p>
         </div>
         <div>
             <h2>Try it now!</h2>
@@ -22,7 +22,7 @@
                 <input id="endpoint" type="text" class="form-control" placeholder="{{ $defaultSearchValue }}" value="{{ $defaultSearchValue }}">
                 <span class="input-group-btn"><button class="btn btn-info requestButton">Request</button></span>
             </div>
-            <small>Need a hint? <a href="#" class="hint"><i>characters/1</i></a> or <a href="#" class="hint"><i>episodes/2</i></a> or <a href="#" class="hint"><i>locations/10</i></a></small>
+            <small>Need a hint? <a href="#" class="hint"><i>characters/1</i></a> or <a href="#" class="hint"><i>episodes/2</i></a> or <a href="#" class="hint"><i>locations/10</i></a> or <a href="#" class="hint"><i>families/1</i></a></small>
             <br/><br/>
             <h4>Result:</h4>
             <div class="code-block">
@@ -61,7 +61,7 @@
             })
 
             const processGetExample = (endpoint) => {
-                axios.get('https://spapi.dev/api/' + endpoint)
+                axios.get('{{env('API_URL')}}' + endpoint)
                 .then((data) => {
                     $('.response-code').text(JSON.stringify(data.data, null, 2));
                 })

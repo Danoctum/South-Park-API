@@ -22,6 +22,7 @@ Route::get('/about', function() {
         'characterCount' => App\Models\Character::count(),
         'episodeCount' => App\Models\Episode::count(),
         'locationCount' => App\Models\Location::count(),
+        'familyCount' => \App\Models\Family::count(),
     ]);
 })->name('about');
 
