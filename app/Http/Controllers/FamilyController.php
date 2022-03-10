@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Character;
+use App\Http\Resources\FamilyResource;
+use App\Models\Family;
 use Illuminate\Http\Request;
-use App\Http\Resources\CharacterShowResource;
 
-class CharacterController extends Controller
+class FamilyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,13 +15,13 @@ class CharacterController extends Controller
      */
     public function index(Request $request)
     {
-        $charactersQuery = Character::with(['relatives', 'episodes', 'family']);
+        $familiesQuery = Family::with(['characters']);
         if($request->query('search')) {
-            $charactersQuery->search($request->query('search'));
+            $familiesQuery->search($request->query('search'));
         }
 
-        $characters = $charactersQuery->paginate(10);
-        return CharacterShowResource::collection($characters);
+        $families = $familiesQuery->paginate(10);
+        return FamilyResource::collection($families);
     }
 
     /**
@@ -48,22 +48,22 @@ class CharacterController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Character  $character
+     * @param  \App\Models\Episode  $episode
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $character = \App\Models\Character::with(['relatives', 'episodes', 'family'])->findOrFail($id);
-        return new CharacterShowResource($character);
+        $episode = Family::with(['characters'])->findOrFail($id);
+        return new FamilyResource($episode);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Character  $character
+     * @param  \App\Models\Episode  $episode
      * @return \Illuminate\Http\Response
      */
-    public function edit(Character $character)
+    public function edit(Episode $episode)
     {
         //
     }
@@ -72,10 +72,10 @@ class CharacterController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Character  $character
+     * @param  \App\Models\Episode  $episode
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Character $character)
+    public function update(Request $request, Episode $episode)
     {
         //
     }
@@ -83,10 +83,10 @@ class CharacterController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Character  $character
+     * @param  \App\Models\Episode  $episode
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Character $character)
+    public function destroy(Episode $episode)
     {
         //
     }

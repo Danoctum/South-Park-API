@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FamilyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CharacterController;
@@ -30,3 +31,6 @@ Route::get('/episodes/{id}', [EpisodeController::class, 'show'])->name('episodeS
 
 Route::get('/locations', [LocationController::class, 'index'])->name('locationIndex');
 Route::get('/locations/{id}', [LocationController::class, 'show'])->name('locationShow');
+
+Route::get('/families', [FamilyController::class, 'index'])->name('familyIndex');
+Route::get('/families/{id}', [FamilyController::class, 'show'])->name('familyShow');

@@ -5,21 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Episode extends Model
+class Family extends Model
 {
     use HasFactory;
     protected $guarded = [];
 
-    public function locations() {
-        return $this->belongsToMany('App\Models\Location');
-    }
-
     public function characters() {
-        return $this->belongsToMany('App\Models\Character');
+        return $this->hasMany('App\Models\Character');
     }
 
-    public function createEpisodeShowUrlFromId($id) {
-        return route('episodeShow', ['id' => $id]);
+    public function createFamilyUrlFromId($id) {
+        return route('familyShow', ['id' => $id]);
     }
 
     public function scopeSearch($query, $keyword)
