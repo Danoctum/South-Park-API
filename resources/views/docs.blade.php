@@ -71,7 +71,6 @@
             <ul>
                 <li><code>/characters</code> - get all the character resources</li>
                 <li><code>/characters/{id}</code> - get a specific character resource</li>
-                <li><code>/characters/schema</code> - get the JSON schema of this resource</li>
             </ul>
             <p><strong>Example request:</strong></p>
             <pre>curl {{ env('API_URL') }}{{$charactersUrl}}</pre>
@@ -107,7 +106,6 @@
             <ul>
                 <li><code>/episodes</code> - get all the episode resources</li>
                 <li><code>/episodes/{id}</code> - get a specific episode resource</li>
-                <li><code>/episodes/schema</code> - get the JSON schema of this resource</li>
             </ul>
             <p><strong>Example request:</strong></p>
             <pre>curl {{ env('API_URL') }}{{$episodesUrl}}</pre>
@@ -141,7 +139,6 @@
             <ul>
                 <li><code>/locations</code> - get all the location resources</li>
                 <li><code>/locations/{id}</code> - get a specific location resource</li>
-                <li><code>/locations/schema</code> - get the JSON schema of this resource</li>
             </ul>
             <p><strong>Example request:</strong></p>
             <pre>curl {{ env('API_URL') }}{{$locationsUrl}}</pre>

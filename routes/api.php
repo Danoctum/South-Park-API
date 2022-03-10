@@ -23,27 +23,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/characters', [CharacterController::class, 'index'])->name('characterIndex');
-
-Route::get('/characters/schema', function() {
-    return Storage::get('character.json');
-})->name('characterSchema');
-
 Route::get('/characters/{id}', [CharacterController::class, 'show'])->name('characterShow');
 
-
 Route::get('/episodes', [EpisodeController::class, 'index'])->name('episodeIndex');
-
-Route::get('/episodes/schema', function() {
-    return Storage::get('episode.json');
-})->name('episodeSchema');
-
 Route::get('/episodes/{id}', [EpisodeController::class, 'show'])->name('episodeShow');
 
-
 Route::get('/locations', [LocationController::class, 'index'])->name('locationIndex');
-
-Route::get('/locations/schema', function() {
-    return Storage::get('location.json');
-})->name('locationSchema');
-
 Route::get('/locations/{id}', [LocationController::class, 'show'])->name('locationShow');
