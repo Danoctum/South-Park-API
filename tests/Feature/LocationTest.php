@@ -11,10 +11,6 @@ class LocationTest extends TestCase
     private $locationJsonDataStructure = [
         'id',
         'name',
-        'address',
-        'type',
-        'town',
-        'first_appearance_episode_id',
         'created_at',
         'updated_at',
         'episodes',
@@ -39,6 +35,19 @@ class LocationTest extends TestCase
     public function testLocationIndexResponseStructure()
     {
         $response = $this->get('/api/locations');
+
+        $response
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => $this->locationJsonDataStructure
+                ]
+            ]);
+    }
+
+    public function testLocationSearchResponseStructure()
+    {
+        $response = $this->get('/api/locations?search=Avenue');
 
         $response
             ->assertStatus(200)
