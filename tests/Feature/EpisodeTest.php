@@ -14,7 +14,6 @@ class EpisodeTest extends TestCase
         'name',
         'season',
         'episode',
-        'written_by',
         'air_date',
         'created_at',
         'updated_at',
@@ -41,6 +40,19 @@ class EpisodeTest extends TestCase
     public function testEpisodeIndexResponseStructure()
     {
         $response = $this->get('/api/episodes');
+
+        $response
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => $this->episodeJsonDataStructure
+                ]
+            ]);
+    }
+
+    public function testEpisodeSearchResponseStructure()
+    {
+        $response = $this->get('/api/episodes?search=Probe');
 
         $response
             ->assertStatus(200)

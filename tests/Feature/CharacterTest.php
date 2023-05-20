@@ -10,11 +10,9 @@ use App\Http\Resources\CharacterShowResource;
 class CharacterTest extends TestCase
 {
 
-
     private $characterJsonDataStructure = [
         'id',
         'name',
-        'full_name',
         'age',
         'sex',
         'hair_color',
@@ -22,11 +20,9 @@ class CharacterTest extends TestCase
         'grade',
         'religion',
         'voiced_by',
-        'first_appearance_episode_id',
         'created_at',
         'updated_at',
         'url',
-        'first_appearance_episode_url',
         'relatives' => [
             '*' => [
                 'url',
@@ -54,6 +50,18 @@ class CharacterTest extends TestCase
     public function testCharacterIndexResponseStructure() 
     {
         $response = $this->get('/api/characters');
+        $response
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => $this->characterJsonDataStructure
+                ]
+            ]);
+    }
+
+    public function testCharacterSearchResponseStructure() 
+    {
+        $response = $this->get('/api/characters?search=eric');
         $response
             ->assertStatus(200)
             ->assertJsonStructure([

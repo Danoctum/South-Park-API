@@ -35,7 +35,6 @@ class Character extends Model
     {
         return $query->where([
             ['name', 'LIKE', '%'.$keyword.'%'],
-            ['full_name', 'LIKE', '%'.$keyword.'%']
         ]);
     }
 }
