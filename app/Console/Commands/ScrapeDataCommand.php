@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use Database\Seeders\CharacterSeeder;
 use DOMNode;
 use Exception;
-use Goutte\Client;
+use Symfony\Component\BrowserKit\HttpBrowser;
 use Illuminate\Console\Command;
 use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Support\Str;
@@ -68,7 +68,7 @@ class ScrapeDataCommand extends Command
     {
         $this->warn('The command will give lots of output so you can see everything that is added from the command line.');
         try {
-            $client = new Client();
+            $client = new HttpBrowser();
             $this->getLocations($client);
             $this->getCharactersAndFamilies($client);
             $this->getRelatives($client);
@@ -83,7 +83,7 @@ class ScrapeDataCommand extends Command
     /**
      * Function responsible for adding Locations in the database.
      */
-    public function getLocations(Client $client)
+    public function getLocations(HttpBrowser $client)
     {
         $this->info('Attempting to retrieve locations.');
         $crawler = $client->request('GET', $this->locationUrl);
@@ -105,7 +105,7 @@ class ScrapeDataCommand extends Command
      * Loops through every gallery on the families URL.
      * Then visits every character in the gallery and gets their details.
      */
-    public function getCharactersAndFamilies(Client $client)
+    public function getCharactersAndFamilies(HttpBrowser $client)
     {
         $this->info('Attempting to retrieve characters and families.');
         $crawler = $client->request('GET', $this->familiesUrl);
@@ -220,7 +220,7 @@ class ScrapeDataCommand extends Command
      * Saves the relation from character to relation;
      * i.e. if Kyle is the character and Gerald is the relative, the relation would be father.
      */
-    public function getRelatives(Client $client)
+    public function getRelatives(HttpBrowser $client)
     {
         $this->info('Attempting to retrieve character relatives. This part of the command may take long time.');
         $crawler = $client->request('GET', $this->familiesUrl);
@@ -258,7 +258,7 @@ class ScrapeDataCommand extends Command
      * Gets the episodes and searches every character and location in that episode.
      * Locations and characters have to be added first for this to work.
      */
-    public function getEpisodes(Client $client)
+    public function getEpisodes(HttpBrowser $client)
     {
         $this->info('Attempting to retrieve episodes and link existing characters and locations to them.');
         $crawler = $client->request('GET', $this->episodesUrl);
